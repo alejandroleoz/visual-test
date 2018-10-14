@@ -1,0 +1,128 @@
+</!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style>
+		.stage {
+		  position: fixed;
+		  left: 0;
+		  right: 0;
+		  top: 0;
+		  bottom: 0;
+		  background: white;
+		  display: flex;
+		  flex-direction: column;
+		  align-items: center;
+		  justify-content: center;
+		}
+
+		.stage > .placeholder {
+		  color: black;
+		  text-transform: uppercase;
+		  font-family: Arial;
+		  font-size: 60px;
+		}
+
+		.bar {
+		  z-index: 2;
+		  background: red;
+		  position: fixed;
+		  left: 0;
+		  right: 0;
+		  bottom: 0;
+		  height: 50px;
+		  display: flex;
+		  flex-direction: row;
+		  align-items: center;
+		  justify-content: center;
+		}
+	</style>
+
+
+	<script>
+		window.letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "O", "P", "Q", "R", "S", "T", "U", "V","W", "X", "Y", "Z"];
+
+		window["songs/trigal"] = [
+			"Trigal",
+			"donde",
+			"mis",
+			"manos",
+			"se",
+			"dilatan",
+			"comprimen",
+			"arrebatan",
+			"el",
+			"color",
+			"de",
+			"Dame",
+			"tus",
+			"amores",
+			"para",
+			"calmar",
+			"viejos",
+			"dolores",
+			"con",
+			"pan",
+			"Trigo",
+			"maduro",
+			"hay",
+			"en",
+			"pelo",
+			"robó",
+			"quizás",
+			"la",
+			"luz",
+			"al",
+			"sol",
+			"Yo",
+			"soy",
+			"el",
+			"dueño",
+			"fruto",
+			"molino"
+		];
+
+		window.next = function() {
+			let selector = document.getElementById("selector");
+		  let selection = selector.options[selector.selectedIndex].value;
+		  
+			let category = window[selection];
+			let min = 0;
+		  let max = category.length;
+			let rnd = Math.random() * (max - min) + min;
+		  let index = Math.floor(rnd);
+		  document.getElementById("placeholder").innerHTML = category[index];
+		}
+
+		window.fontsize = 60;
+		window.increaseSize = function() {
+			window.fontsize = window.fontsize + 20;
+			document.getElementById("placeholder").style.fontSize = `${window.fontsize}px`;
+		}
+
+		window.reduceSize = function() {
+			window.fontsize = window.fontsize - 20;
+			document.getElementById("placeholder").style.fontSize = `${window.fontsize}px`;
+		}
+
+
+	</script>
+</head>
+<body>
+
+	<div class="bar">
+		<select id="selector">
+			<option value="letters" selected>LETRAS</option>
+			<option value="songs/trigal">TRIGAL</option>
+		</select>
+		<button onclick="next()">SIGUIENTE</button>
+		<button onclick="increaseSize()">+</button>
+		<button onclick="reduceSize()">-</button>
+	</div>
+
+	<div class="stage">
+	  <div id="placeholder" class="placeholder"></div>
+	</div>
+
+</body>
+</html>
