@@ -1,0 +1,189 @@
+<html>
+
+<head>
+
+	<style type="text/css">
+
+		html {
+			font-size: 40px;
+		}
+
+		.carton {
+			display: flex;
+			flex-direction: row;
+		}
+
+		.carton > .column {
+			width: 3rem;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.carton > .column > .cell {
+			height: 3rem;
+			background: white;
+			color: black;
+			font-weight: bold;
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			border: solid 1px black;
+			font-size: 1rem;
+			cursor: pointer;
+		}
+
+		.carton > .column > .cell.marked > .text {
+			color: green;
+			background: green;
+			border-radius: 100%;
+			width: 70%;
+			height: 70%;
+		}
+
+		.carton > .column > .cell.blank {
+			background: lightblue;
+		}
+
+
+	</style>
+
+	<script type="text/javascript">
+
+		window.getRandomInt = function(min, max) {
+		  min = Math.ceil(min);
+		  max = Math.floor(max + 1);
+		  return Math.floor(Math.random() * (max - min)) + min; // Both min and max are INclusive
+		}
+
+		window.generateColumnNumbers = function(iMin, iMax) {
+			let totalCellsCount = 5;
+			let numbersCount = 3;
+			let blankCellsCount = totalCellsCount - numbersCount;
+
+			// create random numbers
+			let generatedNumbers = [];
+			for(let i = 0; i<numbersCount; i++) {
+				let n;
+				do{
+					n = getRandomInt(iMin, iMax);
+				} while (generatedNumbers.indexOf(n) >= 0);
+			 	generatedNumbers.push(n);
+			}
+
+			// sort them
+			generatedNumbers.sort();
+
+			// determine blank places
+			let blankPlaces = [];
+			for(let i = 0; i<blankCellsCount; i++){
+				let n;
+				do{
+					n = getRandomInt(0, totalCellsCount-1);
+				} while (blankPlaces.indexOf(n) >= 0);
+			 	blankPlaces.push(n);
+			}
+
+
+			// combine numbers and places
+			let places = [];
+			for(let i=0; i<totalCellsCount; i++) {
+
+				// check if empty
+				if(blankPlaces.indexOf(i) >= 0) {
+					places.push(null);
+					continue;
+				}
+
+				// if not, set the number
+				places.push(generatedNumbers.splice(0, 1)[0]);
+			}
+
+			return places;
+		}
+
+		window.createColumn = function(iMin, iMax) {
+			let numbers = generateColumnNumbers(iMin, iMax);
+			
+			let column = document.createElement("div");
+			column.setAttribute("class", "column");
+
+			numbers
+				.forEach(number => {
+					let cell = document.createElement("div");
+					cell.setAttribute("class", "cell");
+
+					if(number) {
+						let text = document.createElement("div");
+						text.setAttribute("class", "text");
+						text.innerHTML = number;
+						cell.appendChild(text);
+					} else {
+						cell.classList.add("blank");
+					}
+					
+					cell.setAttribute("onclick", "toggleCell(this)");
+
+					column.appendChild(cell);
+				});
+
+			return column;
+		}
+
+		window.createCarton = function() {
+			let carton = document.createElement("div");
+			carton.setAttribute("class", "carton");
+
+			let column;
+			column = createColumn(0, 9);
+			carton.appendChild(column);
+
+			column = createColumn(10, 19);
+			carton.appendChild(column);
+
+			column = createColumn(20, 29);
+			carton.appendChild(column);
+
+			column = createColumn(30, 39);
+			carton.appendChild(column);
+
+			column = createColumn(40, 49);
+			carton.appendChild(column);
+
+			document.body.appendChild(carton);
+		}
+
+		window.toggleCell = function(cell) {
+			if(!cell.classList.contains("blank")) {
+				cell.classList.toggle("marked");
+			}
+		}
+
+
+	</script>
+</head>
+<body onload="createCarton()">
+
+<!--
+	<div class="column">
+		<div class="cell">
+			<div class="text">42</div>
+		</div>
+		<div class="cell">
+			<div class="text">44</div>
+		</div>
+		<div class="cell">
+			<div class="text"></div>
+		</div>
+		<div class="cell">
+			<div class="text">49</div>
+		</div>
+		<div class="cell">
+			<div class="text"></div>
+		</div>
+	</div>
+</div> -->
+
+</body>
+
+</html>
